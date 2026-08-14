@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Blog Tech</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #172033;
+    }
+
+    header {
+      background: #21466d;
+      color: white;
+      text-align: center;
+      padding: 45px 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-family: Georgia, serif;
+      font-size: 42px;
+    }
+
+    header p {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
+
+    .post {
+      background: white;
+      padding: 28px;
+      margin-bottom: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .post h2 {
+      color: #21466d;
+      font-family: Georgia, serif;
+      font-size: 30px;
+      margin-top: 0;
+    }
+
+    .meta {
+      color: #666;
+      font-size: 15px;
+    }
+
+    .post p {
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .post-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .btn {
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      background: #e9edf2;
+      color: #172033;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      transform: scale(1.03);
+    }
+
+    .btn.active {
+      color: white;
+    }
+
+    .like-btn.active {
+      background: #2563eb;
+    }
+
+    .love-btn.active {
+      background: #e53935;
+    }
+
+    .count {
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #666;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 32px;
+      }
+
+      header p {
+        font-size: 17px;
+      }
+
+      .post h2 {
+        font-size: 25px;
+      }
+
+      .post-actions {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Meu Blog Tech</h1>
+    <p>Insights, dicas e reflexões sobre desenvolvimento</p>
+  </header>
+
+  <main>
+
+    <article class="post" data-post-id="post-1">
+      <h2>Como otimizar seu bundle JavaScript</h2>
+
+      <p class="meta">
+        13 de agosto de 2026 • Por Lucas
+      </p>
+
+      <p>
+        Este post mostra técnicas práticas para reduzir o tamanho do
+        bundle JavaScript, melhorar o desempenho e deixar aplicações
+        mais rápidas.
+      </p>
+
+      <div class="post-actions">
+
+        <button class="btn like-btn" aria-pressed="false">
+          👍 Curtir
+          <span class="count">0</span>
+        </button>
+
+        <button class="btn love-btn" aria-pressed="false">
+          ❤️ Amei
+          <span class="count">0</span>
+        </button>
+
+      </div>
+    </article>
+
+
+    <article class="post" data-post-id="post-2">
+      <h2>Por que aprender programação?</h2>
+
+      <p class="meta">
+        13 de agosto de 2026 • Por Lucas
+      </p>
+
+      <p>
+        Aprender programação ajuda a desenvolver o raciocínio lógico,
+        resolver problemas e criar projetos utilizando tecnologia.
+        É uma habilidade cada vez mais importante no mundo digital.
+      </p>
+
+      <div class="post-actions">
+
+        <button class="btn like-btn" aria-pressed="false">
+          👍 Curtir
+          <span class="count">0</span>
+        </button>
+
+        <button class="btn love-btn" aria-pressed="false">
+          ❤️ Amei
+          <span class="count">0</span>
+        </button>
+
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    Meu Blog Tech — Projeto desenvolvido para estudo.
+  </footer>
+
+
+  <script>
+    const posts = document.querySelectorAll(".post");
+
+    posts.forEach(post => {
+
+      const postId = post.dataset.postId;
+
+      const likeButton = post.querySelector(".like-btn");
+      const loveButton = post.querySelector(".love-btn");
+
+      const likeCount = likeButton.querySelector(".count");
+      const loveCount = loveButton.querySelector(".count");
+
+      const saved = JSON.parse(
+        localStorage.getItem("blog-" + postId)
+      ) || {
+        like: 0,
+        love: 0,
+        liked: false,
+        loved: false
+      };
+
+      likeCount.textContent = saved.like;
+      loveCount.textContent = saved.love;
+
+      if (saved.liked) {
+        likeButton.classList.add("active");
+        likeButton.setAttribute("aria-pressed", "true");
+      }
+
+      if (saved.loved) {
+        loveButton.classList.add("active");
+        loveButton.setAttribute("aria-pressed", "true");
+      }
+
+
+      likeButton.addEventListener("click", () => {
+
+        saved.liked = !saved.liked;
+
+        if (saved.liked) {
+          saved.like++;
+        } else {
+          saved.like--;
+        }
+
+        likeCount.textContent = saved.like;
+
+        likeButton.classList.toggle(
+          "active",
+          saved.liked
+        );
+
+        likeButton.setAttribute(
+          "aria-pressed",
+          saved.liked
+        );
+
+        localStorage.setItem(
+          "blog-" + postId,
+          JSON.stringify(saved)
+        );
+      });
+
+
+      loveButton.addEventListener("click", () => {
+
+        saved.loved = !saved.loved;
+
+        if (saved.loved) {
+          saved.love++;
+        } else {
+          saved.love--;
+        }
+
+        loveCount.textContent = saved.love;
+
+        loveButton.classList.toggle(
+          "active",
+          saved.loved
+        );
+
+        loveButton.setAttribute(
+          "aria-pressed",
+          saved.loved
+        );
+
+        localStorage.setItem(
+          "blog-" + postId,
+          JSON.stringify(saved)
+        );
+      });
+
+    });
+  </script>
+
+</body>
+</html>
